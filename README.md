@@ -7,6 +7,10 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6.svg)](https://www.typescriptlang.org/)
 [![Gemini AI](https://img.shields.io/badge/Gemini-AI-4285f4.svg)](https://ai.google.dev/)
 
+## 🌐 Aplicação Online
+
+**Acesse a aplicação:** [https://aplicacao-de-saude-mental.vercel.app/](https://aplicacao-de-saude-mental.vercel.app/)
+
 ## 📋 Visão Geral
 
 Uma ferramenta completa de autoavaliação de saúde mental que guia os usuários através de um questionário de bem-estar e gera relatórios personalizados com análise por IA, avaliação de risco e recomendações.
