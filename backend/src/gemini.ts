@@ -56,8 +56,8 @@ function getFallbackResponse(language: 'pt' | 'en', isUrgent: boolean): Analysis
         title: 'Seek Professional Support',
         content: 'Mental health professionals can provide proper assessment and support tailored to your needs.',
         suggestedReading: [
-          { title: 'How to find a therapist', url: 'https://www.psychologytoday.com/us/therapists' },
-          { title: 'Mental health services', url: 'https://www.nimh.nih.gov/health/find-help' }
+          { title: 'How to find a therapist' },
+          { title: 'Mental health services and resources' }
         ]
       },
       recommendations: [

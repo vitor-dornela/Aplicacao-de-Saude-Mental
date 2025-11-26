@@ -35,6 +35,7 @@ export function ReportView({ responses, onRestart, language = 'pt' }: ReportView
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
+  const [concernsOpen, setConcernsOpen] = useState(false);
 
   const t = language === 'pt' ? translations.pt : translations.en;
 
@@ -154,16 +155,16 @@ export function ReportView({ responses, onRestart, language = 'pt' }: ReportView
           <AlertTitle className="text-red-900">{t.seekHelpImmediately}</AlertTitle>
           <AlertDescription className="text-red-800">
             {language === 'pt' ? (
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              <div className="flex flex-wrap items-center" style={{ gap: '1.5rem' }}>
                 <span>📞 <strong>CVV: 188</strong> (24h)</span>
-                <span>💬 <a href="https://www.cvv.org.br" target="_blank" rel="noopener noreferrer" className="underline font-medium hover:text-red-900">cvv.org.br</a></span>
-                <span>🏥 CAPS ou UPA</span>
+                <span>💬 Chat: <a href="https://www.cvv.org.br" target="_blank" rel="noopener noreferrer" className="underline font-medium hover:text-red-900">cvv.org.br</a></span>
+                <span>🏥 <a href="https://www.google.com/maps/search/CAPS+ou+UPA+perto+de+mim" target="_blank" rel="noopener noreferrer" className="underline font-medium hover:text-red-900">CAPS ou UPA mais próximo</a></span>
               </div>
             ) : (
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              <div className="flex flex-wrap items-center" style={{ gap: '1.5rem' }}>
                 <span>📞 <strong>988</strong> (24/7)</span>
-                <span>💬 Text <strong>741741</strong></span>
-                <span>🏥 Emergency room</span>
+                <span>💬 Text: <strong>741741</strong></span>
+                <span>🏥 <a href="https://www.google.com/maps/search/emergency+room+near+me" target="_blank" rel="noopener noreferrer" className="underline font-medium hover:text-red-900">Emergency room nearby</a></span>
               </div>
             )}
           </AlertDescription>
@@ -185,8 +186,8 @@ export function ReportView({ responses, onRestart, language = 'pt' }: ReportView
 
       {/* Main Concerns - Collapsible */}
       {analysis.mainConcerns.length > 0 && (
-        <Collapsible defaultOpen={false} className="mb-6">
-          <Card>
+        <Collapsible open={concernsOpen} onOpenChange={setConcernsOpen} className="mb-6">
+          <Card className="gap-0">
             <CollapsibleTrigger className="w-full text-left">
               <CardHeader className="cursor-pointer hover:bg-gray-50 transition-colors pb-6">
                 <div className="flex items-center justify-between">
@@ -195,7 +196,10 @@ export function ReportView({ responses, onRestart, language = 'pt' }: ReportView
                     <CardTitle>{t.mainConcernsTitle}</CardTitle>
                     <Badge variant="outline" className="ml-2">{analysis.mainConcerns.length}</Badge>
                   </div>
-                  <ChevronDown className="w-5 h-5 text-gray-500 transition-transform duration-200" />
+                  <ChevronDown 
+                    className="w-5 h-5 text-gray-500 transition-transform duration-200" 
+                    style={{ transform: concernsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                  />
                 </div>
               </CardHeader>
             </CollapsibleTrigger>
@@ -280,35 +284,30 @@ export function ReportView({ responses, onRestart, language = 'pt' }: ReportView
         <CardContent className="space-y-4">
           <p className="text-gray-700 leading-relaxed">{analysis.psychoEducation.content}</p>
           {analysis.psychoEducation.suggestedReading && analysis.psychoEducation.suggestedReading.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-blue-100">
+            <div className="mt-6 pt-6 border-t border-blue-100">
               <div className="flex items-center gap-2 mb-2">
                 <BookOpen className="w-4 h-4 text-blue-600" />
                 <span className="font-medium text-blue-800">{t.suggestedReading}</span>
               </div>
               <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
-                {analysis.psychoEducation.suggestedReading.map((reading, index) => (
-                  <li key={index}>
-                    {typeof reading === 'string' ? (
+                {analysis.psychoEducation.suggestedReading.map((reading, index) => {
+                  const readingText = typeof reading === 'string' ? reading : reading.title;
+                  const readingUrl = typeof reading === 'string' 
+                    ? `https://www.google.com/search?q=${encodeURIComponent(readingText)}`
+                    : reading.url || `https://www.google.com/search?q=${encodeURIComponent(reading.title)}`;
+                  return (
+                    <li key={index}>
                       <a 
-                        href={`https://www.google.com/search?q=${encodeURIComponent(reading)}`}
+                        href={readingUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:text-blue-800 hover:underline"
                       >
-                        {reading}
+                        {readingText}
                       </a>
-                    ) : (
-                      <a 
-                        href={reading.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 hover:underline"
-                      >
-                        {reading.title}
-                      </a>
-                    )}
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           )}
