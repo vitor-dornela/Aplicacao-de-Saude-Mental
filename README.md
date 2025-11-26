@@ -1,77 +1,77 @@
 # 🧠 Aplicação de Saúde Mental
 
-> Mental Health Self-Assessment Application with AI-Powered Analysis
+> Aplicação de Autoavaliação de Saúde Mental com Análise por Inteligência Artificial
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Licença: MIT](https://img.shields.io/badge/Licença-MIT-blue.svg)](LICENSE)
 [![React](https://img.shields.io/badge/React-18.3.1-61dafb.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6.svg)](https://www.typescriptlang.org/)
 [![Gemini AI](https://img.shields.io/badge/Gemini-AI-4285f4.svg)](https://ai.google.dev/)
 
-## 📋 Overview
+## 📋 Visão Geral
 
-A comprehensive mental health self-assessment tool that guides users through a wellness questionnaire and generates personalized reports with AI-powered analysis, risk assessment, and recommendations.
+Uma ferramenta completa de autoavaliação de saúde mental que guia os usuários através de um questionário de bem-estar e gera relatórios personalizados com análise por IA, avaliação de risco e recomendações.
 
-**Key Features:**
-- 🌐 Bilingual support (Portuguese & English)
-- 🤖 AI-powered analysis using Google Gemini
-- 📊 Personalized risk assessment and recommendations
-- 💡 Psychoeducational content
-- 🔒 Privacy-focused (no data stored)
-- 🖨️ Print/Save reports
+**Principais Funcionalidades:**
+- 🌐 Suporte bilíngue (Português e Inglês)
+- 🤖 Análise por IA usando Google Gemini
+- 📊 Avaliação de risco e recomendações personalizadas
+- 💡 Conteúdo psicoeducativo
+- 🔒 Foco em privacidade (nenhum dado armazenado)
+- 🖨️ Imprimir/Salvar relatórios
 
-## 🏗️ Project Structure
+## 🏗️ Estrutura do Projeto
 
 ```
 Aplicação de Saúde Mental/
-├── frontend/                    # React + Vite frontend application
+├── frontend/                    # Aplicação frontend React + Vite
 │   ├── src/
-│   │   ├── components/          # React components
-│   │   │   ├── ui/              # shadcn/ui components
+│   │   ├── components/          # Componentes React
+│   │   │   ├── ui/              # Componentes shadcn/ui
 │   │   │   ├── WelcomeScreen.tsx
 │   │   │   ├── QuestionnaireForm.tsx
 │   │   │   └── ReportView.tsx
-│   │   ├── services/            # API services
-│   │   ├── types/               # TypeScript types
-│   │   └── App.tsx              # Main application
+│   │   ├── services/            # Serviços de API
+│   │   ├── types/               # Tipos TypeScript
+│   │   └── App.tsx              # Aplicação principal
 │   ├── package.json
 │   └── vite.config.ts
 │
-├── backend/                     # Node.js + Express backend API
+├── backend/                     # API backend Node.js + Express
 │   ├── src/
-│   │   ├── index.ts             # Express server
-│   │   ├── gemini.ts            # Gemini AI integration
-│   │   ├── prompts.ts           # AI system prompts
-│   │   └── types.ts             # Zod validation schemas
+│   │   ├── index.ts             # Servidor Express
+│   │   ├── gemini.ts            # Integração Gemini AI
+│   │   ├── prompts.ts           # Prompts do sistema de IA
+│   │   └── types.ts             # Esquemas de validação Zod
 │   ├── package.json
-│   └── .env                     # Environment variables
+│   └── .env                     # Variáveis de ambiente
 │
-├── docs/                        # Documentation
-│   ├── PROJECT_STATUS.md        # Implementation tracking
-│   └── GEMINI_PROMPT_DESIGN.md  # AI prompt engineering
+├── docs/                        # Documentação
+│   ├── PROJECT_STATUS.md        # Acompanhamento da implementação
+│   └── GEMINI_PROMPT_DESIGN.md  # Engenharia de prompts de IA
 │
 ├── .github/
-│   └── copilot-instructions.md  # AI coding guidelines
+│   └── copilot-instructions.md  # Diretrizes de codificação com IA
 │
-└── README.md                    # This file
+└── README.md                    # Este arquivo
 ```
 
-## 🚀 Quick Start
+## 🚀 Início Rápido
 
-### Prerequisites
+### Pré-requisitos
 
 - Node.js 18+ 
-- npm or yarn
-- Google Gemini API key ([Get one here](https://aistudio.google.com/))
+- npm ou yarn
+- Chave de API do Google Gemini ([Obtenha aqui](https://aistudio.google.com/))
 
-### Installation
+### Instalação
 
-1. **Clone the repository**
+1. **Clone o repositório**
    ```bash
-   git clone <repository-url>
+   git clone <url-do-repositorio>
    cd "Aplicação de Saúde Mental"
    ```
 
-2. **Install dependencies**
+2. **Instale as dependências**
    ```bash
    # Frontend
    cd frontend
@@ -82,12 +82,12 @@ Aplicação de Saúde Mental/
    npm install
    ```
 
-3. **Configure environment variables**
+3. **Configure as variáveis de ambiente**
    
    Backend (`backend/.env`):
    ```env
    PORT=3001
-   GEMINI_API_KEY=your_gemini_api_key_here
+   GEMINI_API_KEY=sua_chave_api_gemini_aqui
    NODE_ENV=development
    ```
    
@@ -96,7 +96,7 @@ Aplicação de Saúde Mental/
    VITE_API_URL=http://localhost:3001
    ```
 
-4. **Start the applications**
+4. **Inicie as aplicações**
    
    ```bash
    # Terminal 1 - Backend
@@ -108,73 +108,73 @@ Aplicação de Saúde Mental/
    npm run dev
    ```
 
-5. **Open in browser**
+5. **Abra no navegador**
    - Frontend: http://localhost:3000
-   - Backend Health: http://localhost:3001/health
+   - Saúde do Backend: http://localhost:3001/health
 
-## 🛠️ Tech Stack
+## 🛠️ Stack Tecnológica
 
 ### Frontend
-| Technology | Purpose |
-|------------|---------|
-| React 18 | UI Framework |
-| TypeScript | Type Safety |
-| Vite | Build Tool |
-| Tailwind CSS | Styling |
-| shadcn/ui | UI Components |
-| Lucide React | Icons |
+| Tecnologia | Propósito |
+|------------|-----------|
+| React 18 | Framework de UI |
+| TypeScript | Tipagem Estática |
+| Vite | Ferramenta de Build |
+| Tailwind CSS | Estilização |
+| shadcn/ui | Componentes de UI |
+| Lucide React | Ícones |
 
 ### Backend
-| Technology | Purpose |
-|------------|---------|
+| Tecnologia | Propósito |
+|------------|-----------|
 | Node.js | Runtime |
-| Express | Web Framework |
-| TypeScript | Type Safety |
-| Google Gemini | AI Analysis |
-| Zod | Validation |
-| Helmet | Security |
+| Express | Framework Web |
+| TypeScript | Tipagem Estática |
+| Google Gemini | Análise por IA |
+| Zod | Validação |
+| Helmet | Segurança |
 
-## 📱 Application Flow
+## 📱 Fluxo da Aplicação
 
 ```
 ┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│  Welcome Screen │ ──▶ │  Questionnaire   │ ──▶ │  Report View    │
-│  (Language Sel) │     │  (10 Questions)  │     │  (AI Analysis)  │
+│  Tela de Boas   │ ──▶ │   Questionário   │ ──▶ │  Visualização   │
+│  Vindas (Idioma)│     │  (10 Perguntas)  │     │  do Relatório   │
 └─────────────────┘     └──────────────────┘     └─────────────────┘
                                                          │
                                                          ▼
                                                   ┌─────────────────┐
-                                                  │  Backend API    │
-                                                  │  (Gemini AI)    │
+                                                  │   API Backend   │
+                                                  │   (Gemini AI)   │
                                                   └─────────────────┘
 ```
 
-## 🔒 Privacy & Security
+## 🔒 Privacidade e Segurança
 
-- **No data storage**: All analysis is done in real-time, no data is persisted
-- **Rate limiting**: API requests are rate-limited to prevent abuse
-- **CORS protected**: Backend only accepts requests from authorized origins
-- **Secure headers**: Helmet.js provides security headers
+- **Sem armazenamento de dados**: Toda análise é feita em tempo real, nenhum dado é persistido
+- **Limitação de taxa**: Requisições à API são limitadas para prevenir abuso
+- **Proteção CORS**: Backend aceita apenas requisições de origens autorizadas
+- **Headers seguros**: Helmet.js fornece headers de segurança
 
-## ⚠️ Disclaimer
+## ⚠️ Aviso Legal
 
-This application is for **educational and self-awareness purposes only**. It is **NOT** a medical diagnosis tool. If you are experiencing mental health issues, please seek help from qualified professionals:
+Esta aplicação é apenas para **propósitos educacionais e de autoconhecimento**. **NÃO** é uma ferramenta de diagnóstico médico. Se você está passando por problemas de saúde mental, por favor procure ajuda de profissionais qualificados:
 
-- 🇧🇷 **Brazil**: CVV - 188 (24h, free)
-- 🇺🇸 **USA**: 988 Suicide & Crisis Lifeline
+- 🇧🇷 **Brasil**: CVV - 188 (24h, gratuito)
+- 🇺🇸 **EUA**: 988 Suicide & Crisis Lifeline
 
-## 📄 License
+## 📄 Licença
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
-## 🤝 Contributing
+## 🤝 Contribuindo
 
-Contributions are welcome! Please read our contributing guidelines before submitting PRs.
+Contribuições são bem-vindas! Por favor, leia nossas diretrizes de contribuição antes de enviar PRs.
 
-## 📞 Support
+## 📞 Suporte
 
-For questions or issues, please open a GitHub issue or contact the maintainers.
+Para dúvidas ou problemas, por favor abra uma issue no GitHub ou entre em contato com os mantenedores.
 
 ---
 
-**Made with ❤️ for mental health awareness**
+**Feito com ❤️ pela conscientização em saúde mental**

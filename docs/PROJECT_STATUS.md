@@ -1,6 +1,6 @@
 # Mental Health Application - Project Status
 
-> Last Updated: November 25, 2025
+> Last Updated: November 26, 2025
 
 ## 📋 Project Overview
 
@@ -79,7 +79,7 @@ Aplicação de Saúde Mental/
 | Express server setup | ✅ Done | Port 3001 |
 | Health check endpoint | ✅ Done | GET /health |
 | Analysis endpoint | ✅ Done | POST /api/analyze |
-| Gemini API integration | ✅ Done | gemini-1.5-flash model |
+| Gemini API integration | ✅ Done | gemini-2.0-flash model |
 | Bilingual prompts (PT/EN) | ✅ Done | In prompts.ts |
 | Zod input validation | ✅ Done | Request validation |
 | Rate limiting | ✅ Done | 10 requests per 15 minutes |
@@ -111,6 +111,9 @@ Aplicação de Saúde Mental/
 | Psychoeducation section | ✅ Done | With suggested readings |
 | Prioritized recommendations | ✅ Done | immediate/short-term/ongoing |
 | Crisis resources | ✅ Done | Brazil (188) / US (988) |
+| Google Maps links | ✅ Done | CAPS/UPA search for crisis |
+| Suggested readings links | ✅ Done | Google search for each topic |
+| Collapsible concerns section | ✅ Done | Animated chevron rotation |
 
 ---
 
@@ -177,7 +180,7 @@ npm run dev
 | UI Components | shadcn/ui |
 | Icons | Lucide React |
 | Backend | Express.js + TypeScript |
-| AI/LLM | Google Gemini 1.5 Flash |
+| AI/LLM | Google Gemini 2.0 Flash |
 | Validation | Zod |
 | Security | Helmet, CORS, Rate Limiting |
 
