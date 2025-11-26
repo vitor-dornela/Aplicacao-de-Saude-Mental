@@ -1,162 +1,170 @@
-# Copilot Instructions - Mental Health Application Prototype
+# Copilot Instructions - Mental Health Application
 
-## Project Overview
-A React + TypeScript mental health self-assessment application built with Vite. The app uses a simple state-machine pattern to guide users through a wellness questionnaire and generate personalized reports with risk analysis and recommendations.
+## Architecture Overview
 
-**Origin**: Generated from Figma design using Figma Make (design available at Figma project link in README.md)
+**Monorepo** with React frontend + Node.js/Express backend using Google Gemini AI for mental health self-assessment analysis.
 
-## Architecture Pattern
-
-### State Machine Flow
-The app uses a single-parent state machine in `App.tsx`:
-- **States**: `'welcome' | 'questionnaire' | 'report'` controlled by `currentScreen`
-- **Data flow**: State lives in `App.tsx`, flows down via props, callbacks bubble up
-- **Navigation**: Screen transitions triggered by callbacks (`onStart`, `onSubmit`, `onRestart`)
-
-Example from `App.tsx`:
-```tsx
-const [currentScreen, setCurrentScreen] = useState<AppScreen>('welcome');
-const [responses, setResponses] = useState<QuestionnaireData | null>(null);
+```
+frontend/   → React + Vite + TypeScript (port 3000/5173)
+backend/    → Express + Gemini AI (port 3001)
+docs/       → Project documentation
 ```
 
-### Component Organization
-- `/components/`: Screen-level components (WelcomeScreen, QuestionnaireForm, ReportView)
-- `/components/ui/`: shadcn/ui primitives (never modify directly - these are from shadcn library)
-- `/components/figma/`: Figma-specific utilities (ImageWithFallback)
-- `/guidelines/`: Design system documentation (reference for UI decisions)
+### Data Flow
+```
+WelcomeScreen → QuestionnaireForm → ReportView
+                      ↓                  ↓
+               (10 questions)    POST /api/analyze
+                                       ↓
+                               Gemini AI Analysis
+                                       ↓
+                               JSON AnalysisResult
+```
 
-## Development Workflow
+## Quick Start
 
-### Running the App
 ```bash
-npm i           # Install dependencies
-npm run dev     # Start Vite dev server (default: http://localhost:5173)
-npm run build   # Production build
+# Backend (Terminal 1)
+cd backend && npm install && npm run dev
+
+# Frontend (Terminal 2)  
+cd frontend && npm install && npm run dev
 ```
 
-### Key Technical Details
-- **Build tool**: Vite with SWC plugin for fast React refresh
-- **Styling**: Tailwind CSS v4.1.3 (compiled CSS in `src/index.css`)
-- **Type safety**: TypeScript with strict mode (no explicit tsconfig - Vite defaults)
-- **State management**: React useState hooks (no external state library)
-- **Form handling**: react-hook-form for complex multi-step questionnaire
+**Required**: Create `backend/.env` with `GEMINI_API_KEY=your_key` (get from [aistudio.google.com](https://aistudio.google.com/))
 
-### Vite Alias Configuration
-Custom path alias `@` maps to `./src` for imports:
-```tsx
-import { cn } from '@/components/ui/utils'
+## Environment Variables
+
+### Backend (`backend/.env`)
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `GEMINI_API_KEY` | ✅ Yes | - | Google Gemini API key |
+| `PORT` | No | `3001` | Backend server port |
+| `NODE_ENV` | No | `development` | Environment mode |
+| `CORS_ORIGIN` | No | `localhost:3000,localhost:5173` | Comma-separated allowed origins |
+| `RATE_LIMIT_WINDOW_MS` | No | `900000` (15 min) | Rate limit window in ms |
+| `RATE_LIMIT_MAX_REQUESTS` | No | `10` | Max requests per window |
+
+### Frontend (`frontend/.env.local`)
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `VITE_API_URL` | No | `http://localhost:3001` | Backend API URL |
+
+## Critical Conventions
+
+### Type Synchronization
+Types are **duplicated** between frontend and backend (not shared):
+- `frontend/src/types/api.ts` - Frontend interfaces
+- `backend/src/types.ts` - Zod schemas + interfaces
+
+**When modifying API response structure**: Update both files and ensure Zod schema matches interfaces.
+
+### Zod Validation Pattern
+Backend uses Zod for strict input validation. All 10 questionnaire fields use `z.enum()`:
+```typescript
+// backend/src/types.ts
+mood: z.enum(['very-good', 'good', 'neutral', 'bad', 'very-bad']),
+hopelessness: z.enum(['optimistic', 'neutral', 'some-worry', 'hopeless', 'very-dark']),
 ```
+Adding new enum values requires updating both Zod schema AND frontend question options.
 
-⚠️ **Important**: `vite.config.ts` contains extensive versioned package aliases (e.g., `'vaul@1.1.2': 'vaul'`) - preserve these when modifying config.
+### Bilingual Support (pt/en)
+All user-facing text supports Portuguese and English:
+- Frontend: Translation objects in each component (e.g., `translations.pt`, `translations.en`)
+- Backend: Separate system prompts `SYSTEM_PROMPT_PT` / `SYSTEM_PROMPT_EN` in `prompts.ts`
+- API: `language` field in request body controls response language
 
-## UI Component Conventions
+### shadcn/ui Components
+`frontend/src/components/ui/` contains shadcn library code:
+- **DO NOT modify** these files - treat as external library
+- Customize via `className` props using Tailwind
+- Use `cn()` from `@/components/ui/utils` to merge classes
 
-### shadcn/ui Usage
-All `/components/ui/` files are from [shadcn/ui](https://ui.shadcn.com/) (MIT licensed):
-- **DO NOT modify** component internals - treat as external library
-- Customize via className props and Tailwind utilities
-- Use the `cn()` utility from `@/components/ui/utils` to merge class names
+## Key Files
 
-Example pattern from codebase:
-```tsx
-import { Button } from './ui/button';
-<Button className="bg-gradient-to-r from-purple-600 to-pink-600">
-```
+| File | Purpose |
+|------|---------|
+| `frontend/src/App.tsx` | State machine: `welcome → questionnaire → report` |
+| `frontend/src/services/api.ts` | Backend API client |
+| `backend/src/gemini.ts` | Gemini AI integration with fallback responses |
+| `backend/src/prompts.ts` | AI system prompts (bilingual) + JSON schema |
+| `backend/src/types.ts` | Zod validation schemas for API input |
+| `docs/GEMINI_PROMPT_DESIGN.md` | **Deep dive**: Prompt engineering strategy, field analysis rules, risk calculation logic |
 
-### Color Palette
-The app uses a gradient-heavy purple/pink/blue theme:
-- Primary gradients: `from-purple-500 to-pink-500`, `from-purple-600 to-pink-600`
-- Background: `bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50`
-- Component accents: purple-100/600, pink-100/600, blue-100/600
-- Risk levels: green (low), yellow (moderate), orange (high), red (urgent)
+## Modification Patterns
 
-### Icon System
-Uses [lucide-react](https://lucide.dev/) for all icons:
-```tsx
-import { Heart, Brain, AlertTriangle } from 'lucide-react';
-```
+### Adding a New Question
+1. Add to `QuestionnaireData` type in `frontend/src/App.tsx`
+2. Add question object to `questionsPt` and `questionsEn` arrays in `QuestionnaireForm.tsx`
+3. Add Zod validation in `backend/src/types.ts` (`QuestionnaireSchema`)
+4. Update field analysis section in `backend/src/prompts.ts`
 
-## Data Model
+### Modifying AI Behavior
+- Risk calculation rules: Edit `SYSTEM_PROMPT_PT/EN` in `backend/src/prompts.ts`
+- Response format: Update `JSON_SCHEMA` in prompts.ts + both type files
+- Fallback responses (API failure): Edit `getFallbackResponse()` in `backend/src/gemini.ts`
+- **Full prompt engineering docs**: See `docs/GEMINI_PROMPT_DESIGN.md`
 
-### Questionnaire Structure
-10 mental health questions stored in `QuestionnaireData` type:
-```tsx
-export type QuestionnaireData = {
-  mood: string;
-  sleep: string;
-  energy: string;
-  concentration: string;
-  socialInteraction: string;
-  appetite: string;
-  hopelessness: string;
-  anxiety: string;
-  physicalSymptoms: string;
-  dailyActivities: string;
-  openResponse: string;
-};
-```
+### Crisis Detection
+`backend/src/prompts.ts` exports `containsCrisisKeywords()` - checks open responses for crisis indicators. Backend auto-flags `urgentHelp: true` when:
+- `hopelessness === 'very-dark'`
+- Crisis keywords detected in `openResponse`
 
-Questions are defined in `QuestionnaireForm.tsx` with 5-point Likert scales (e.g., 'very-good' to 'very-bad').
+## Debugging & Testing
 
-### Report Analysis
-`ReportView.tsx` includes a client-side analysis function `analyzeResponses()` that:
-- Calculates risk level based on response patterns
-- Identifies main concerns and positive aspects
-- Generates contextual recommendations
-- Provides psychoeducational content
-- Determines if urgent help is needed
-
-⚠️ **Critical**: This is a **prototype simulation** - the analysis is rule-based, not AI-powered. The 2-second loading animation in `ReportView` simulates processing but is purely cosmetic.
-
-## File Modification Patterns
-
-### When Adding New Questions
-1. Update `QuestionnaireData` type in `App.tsx`
-2. Add question object to `questions` array in `QuestionnaireForm.tsx`
-3. Update `analyzeResponses()` logic in `ReportView.tsx` to process new response
-
-### When Modifying Styling
-- Global styles: Edit `src/styles/globals.css` (base typography, prose styles)
-- Tailwind variables: Modify `src/index.css` CSS variables (colors are oklch format)
-- Component styles: Use inline Tailwind classes with `className` prop
-
-### When Adding New Screens
-Follow the state machine pattern:
-1. Add new state to `AppScreen` union type in `App.tsx`
-2. Create screen component in `/components/`
-3. Add conditional render in `App.tsx` return JSX
-4. Implement navigation callbacks
-
-## Special Considerations
-
-### Portuguese Language
-All user-facing content is in Brazilian Portuguese (`pt-BR`). Maintain this when adding features.
-
-### No Backend
-This is a **client-only** prototype:
-- No API calls or data persistence
-- Analysis happens in-browser via `analyzeResponses()` function
-- Privacy-focused design (data never leaves user's device)
-
-### Accessibility
-Follow existing patterns for semantic HTML and ARIA usage from shadcn/ui components. The design prioritizes clarity for sensitive mental health content.
-
-### Legal/Ethical Notice
-Per `WelcomeScreen.tsx` alert: "Este não é um diagnóstico médico" (This is not a medical diagnosis). Maintain clear disclaimers about professional help when modifying report content.
-
-## Common Tasks
-
-**Add a new UI component from shadcn**:
+### Health Check
 ```bash
-# Components are manually copied from https://ui.shadcn.com/
-# Add to src/components/ui/ maintaining existing import patterns
+curl http://localhost:3001/health
+# Expected: {"status":"ok","timestamp":"..."}
 ```
 
-**Debug state transitions**:
-Check `App.tsx` useState hooks and screen rendering conditions. Use React DevTools to inspect `currentScreen` and `responses` state.
+### Test API Directly
+```bash
+curl -X POST http://localhost:3001/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"mood":"good","sleep":"good","energy":"normal","concentration":"good","socialInteraction":"normal","appetite":"normal","hopelessness":"optimistic","anxiety":"occasional","physicalSymptoms":"minimal","dailyActivities":"normal","language":"pt"}'
+```
 
-**Customize risk thresholds**:
-Edit `analyzeResponses()` function in `ReportView.tsx` (search for score calculation logic).
+### Backend Logs
+Backend logs to console: validation errors, Gemini API calls, and errors. Check terminal running `npm run dev`.
 
-**Update dependencies**:
-Note: `package.json` uses wildcards for some packages (`clsx: "*"`). Pin versions if builds break.
+### Common Issues
+| Issue | Solution |
+|-------|----------|
+| CORS errors | Check `CORS_ORIGIN` env var includes frontend URL |
+| 429 Too Many Requests | Rate limited - wait 15 min or adjust `RATE_LIMIT_*` vars |
+| Gemini API error | Check `GEMINI_API_KEY` is valid, check backend console for details |
+| Empty analysis | Gemini returned invalid JSON - `getFallbackResponse()` used instead |
+
+## API Contract
+
+```typescript
+// POST /api/analyze
+Request: QuestionnaireSchema (10 enum fields + openResponse + language)
+Response: { success: boolean, data?: AnalysisResult, error?: string }
+
+// AnalysisResult structure
+{ riskLevel, urgentHelp, summary, mainConcerns[], positiveAspects[], 
+  suggestedTopics[], psychoEducation, recommendations[], crisisResources }
+```
+
+## Styling
+
+- **Theme**: Purple/pink/blue gradients (`from-purple-500 to-pink-500`)
+- **Risk colors**: green (low), yellow (moderate), orange (high), red (urgent)
+- **Icons**: lucide-react exclusively
+- **Path alias**: `@` → `./src` (configured in vite.config.ts)
+
+## Ethics & Safety
+
+- Maintain **"Este não é um diagnóstico médico"** disclaimer in all user-facing screens
+- Never use diagnostic language in prompts ("you have depression" → "symptoms may indicate...")
+- Always include crisis resources (CVV 188 for Brazil, 988 for US) when `urgentHelp: true`
+- **Icons**: lucide-react exclusively
+- **Path alias**: `@` → `./src` (configured in vite.config.ts)
+
+## Ethics & Safety
+
+- Maintain **"Este não é um diagnóstico médico"** disclaimer in all user-facing screens
+- Never use diagnostic language in prompts ("you have depression" → "symptoms may indicate...")
+- Always include crisis resources (CVV 188 for Brazil, 988 for US) when `urgentHelp: true`

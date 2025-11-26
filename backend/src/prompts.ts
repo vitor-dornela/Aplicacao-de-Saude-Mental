@@ -16,9 +16,16 @@ export const SYSTEM_PROMPT_PT = `Você é um assistente de bem-estar mental emp�
 
 6. **SUGIRA TÓPICOS**: Com base no padrão de sintomas, sugira tópicos relevantes de saúde mental que o usuário pode querer pesquisar (ex: "Depressão", "Transtorno de Ansiedade Generalizada", "Burnout", "Síndrome do Pânico", "Distimia"). Estes NÃO são diagnósticos, mas tópicos educacionais.
 
-7. **SEJA CONCISO**: Mantenha todo o texto curto e acionável. Resumo: 1-2 frases. Preocupações: 1 frase cada. Recomendações: 1 frase cada.
+7. **LEITURAS SUGERIDAS PERSONALIZADAS**: Para o campo suggestedReading, forneça 2-3 sugestões de temas para pesquisa DIRETAMENTE RELEVANTES aos principais problemas identificados nas respostas do usuário. Por exemplo:
+   - Se sono ruim: "Técnicas de higiene do sono"
+   - Se ansiedade alta: "Exercícios de respiração e relaxamento"
+   - Se isolamento social: "Como retomar conexões sociais gradualmente"
+   - Se desesperança: "Primeiros passos para buscar ajuda profissional"
+   NÃO INCLUA URLs - apenas forneça títulos descritivos dos temas. O usuário pode pesquisar esses temas em fontes confiáveis como minhavida.com.br, drauziovarella.uol.com.br, vittude.com, zenklub.com.br.
 
-8. **LINGUAGEM**: Responda em português brasileiro, usando linguagem clara e acessível, evitando jargões técnicos excessivos.
+8. **SEJA CONCISO**: Mantenha todo o texto curto e acionável. Resumo: 1-2 frases. Preocupações: 1 frase cada. Recomendações: 1 frase cada.
+
+9. **LINGUAGEM**: Responda em português brasileiro, usando linguagem clara e acessível, evitando jargões técnicos excessivos.
 
 ## ANÁLISE DOS CAMPOS:
 
@@ -59,9 +66,16 @@ export const SYSTEM_PROMPT_EN = `You are an empathetic and professional mental w
 
 6. **SUGGEST TOPICS**: Based on symptom patterns, suggest relevant mental health topics the user might want to research (e.g., "Depression", "Generalized Anxiety Disorder", "Burnout", "Panic Disorder", "Dysthymia"). These are NOT diagnoses, but educational topics.
 
-7. **BE CONCISE**: Keep all text short and actionable. Summary: 1-2 sentences. Concerns: 1 sentence each. Recommendations: 1 sentence each.
+7. **PERSONALIZED SUGGESTED READINGS**: For the suggestedReading field, provide 2-3 topic suggestions for research DIRECTLY RELEVANT to the main issues identified in the user's responses. For example:
+   - If poor sleep: "Sleep hygiene techniques"
+   - If high anxiety: "Breathing and relaxation exercises"
+   - If social isolation: "How to gradually reconnect with others"
+   - If hopelessness: "First steps to seeking professional help"
+   DO NOT INCLUDE URLs - only provide descriptive topic titles. The user can search for these topics on reliable sources like psychologytoday.com, healthline.com/mental-health, nimh.nih.gov, mayoclinic.org, nami.org.
 
-8. **LANGUAGE**: Respond in clear, accessible English, avoiding excessive technical jargon.
+8. **BE CONCISE**: Keep all text short and actionable. Summary: 1-2 sentences. Concerns: 1 sentence each. Recommendations: 1 sentence each.
+
+9. **LANGUAGE**: Respond in clear, accessible English, avoiding excessive technical jargon.
 
 ## FIELD ANALYSIS:
 
@@ -93,7 +107,7 @@ export const JSON_SCHEMA = `{
   "mainConcerns": [{"area": "string", "description": "string (1 sentence)", "severity": "mild"|"moderate"|"severe"}],
   "positiveAspects": ["string (max 10 words each)"],
   "suggestedTopics": ["string - mental health topics to research"],
-  "psychoEducation": {"title": "string", "content": "string (2-3 sentences)", "suggestedReading": ["string"]},
+  "psychoEducation": {"title": "string", "content": "string (2-3 sentences)", "suggestedReading": [{"title": "string (topic to search, NO URL)"}]},
   "recommendations": [{"priority": "immediate"|"short-term"|"ongoing", "action": "string (1 sentence)"}],
   "crisisResources": {"show": boolean, "message": "string"}
 }`;

@@ -28,7 +28,10 @@ function getFallbackResponse(language: 'pt' | 'en', isUrgent: boolean): Analysis
       psychoEducation: {
         title: 'Busque Apoio Profissional',
         content: 'Profissionais de saúde mental podem oferecer avaliação e suporte adequados às suas necessidades.',
-        suggestedReading: ['Como encontrar um psicólogo', 'Serviços de saúde mental no SUS']
+        suggestedReading: [
+          { title: 'Como encontrar um psicólogo' },
+          { title: 'Serviços de saúde mental no SUS' }
+        ]
       },
       recommendations: [
         { priority: 'short-term', action: 'Procure um psicólogo ou psiquiatra para uma avaliação profissional' },
@@ -52,7 +55,10 @@ function getFallbackResponse(language: 'pt' | 'en', isUrgent: boolean): Analysis
       psychoEducation: {
         title: 'Seek Professional Support',
         content: 'Mental health professionals can provide proper assessment and support tailored to your needs.',
-        suggestedReading: ['How to find a therapist', 'Mental health services']
+        suggestedReading: [
+          { title: 'How to find a therapist', url: 'https://www.psychologytoday.com/us/therapists' },
+          { title: 'Mental health services', url: 'https://www.nimh.nih.gov/health/find-help' }
+        ]
       },
       recommendations: [
         { priority: 'short-term', action: 'Seek a psychologist or psychiatrist for a professional assessment' },
@@ -82,7 +88,7 @@ export async function analyzeQuestionnaire(input: QuestionnaireInput): Promise<A
     console.log('API Key present:', !!process.env.GEMINI_API_KEY);
     
     const model = genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.0-flash',
       generationConfig: {
         temperature: 0.3,
         maxOutputTokens: 2000,
@@ -111,7 +117,10 @@ ${JSON_SCHEMA}`;
     ]);
 
     const response = result.response;
-    const text = response.text();
+    let text = response.text();
+    
+    // Clean up markdown code blocks if present
+    text = text.replace(/^```json\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
     
     // Parse JSON response
     let analysis: AnalysisResult;

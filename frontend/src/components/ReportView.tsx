@@ -5,9 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { Separator } from './ui/separator';
 import { Badge } from './ui/badge';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 import {
   AlertTriangle,
   CheckCircle2,
+  ChevronDown,
   Heart,
   Lightbulb,
   Phone,
@@ -130,6 +132,10 @@ export function ReportView({ responses, onRestart, language = 'pt' }: ReportView
     ? { immediate: 'Imediato', 'short-term': 'Curto prazo', ongoing: 'Contínuo' }
     : { immediate: 'Immediate', 'short-term': 'Short-term', ongoing: 'Ongoing' };
 
+  const severityLabels = language === 'pt'
+    ? { mild: 'Leve', moderate: 'Moderado', severe: 'Grave' }
+    : { mild: 'Mild', moderate: 'Moderate', severe: 'Severe' };
+
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <div className="text-center mb-8">
@@ -147,14 +153,26 @@ export function ReportView({ responses, onRestart, language = 'pt' }: ReportView
           <AlertTriangle className="h-5 w-5 text-red-600" />
           <AlertTitle className="text-red-900">{t.seekHelpImmediately}</AlertTitle>
           <AlertDescription className="text-red-800">
-            {analysis.crisisResources.message || t.crisisMessage}
+            {language === 'pt' ? (
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                <span>📞 <strong>CVV: 188</strong> (24h)</span>
+                <span>💬 <a href="https://www.cvv.org.br" target="_blank" rel="noopener noreferrer" className="underline font-medium hover:text-red-900">cvv.org.br</a></span>
+                <span>🏥 CAPS ou UPA</span>
+              </div>
+            ) : (
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                <span>📞 <strong>988</strong> (24/7)</span>
+                <span>💬 Text <strong>741741</strong></span>
+                <span>🏥 Emergency room</span>
+              </div>
+            )}
           </AlertDescription>
         </Alert>
       )}
 
       {/* Summary Card */}
       <Card className="mb-6">
-        <CardHeader>
+        <CardHeader className="pb-6">
           <div className="flex items-center justify-between">
             <CardTitle>{t.riskLevelTitle}</CardTitle>
             <Badge className={riskBadges[analysis.riskLevel]}>
@@ -165,32 +183,41 @@ export function ReportView({ responses, onRestart, language = 'pt' }: ReportView
         </CardHeader>
       </Card>
 
-      {/* Main Concerns */}
+      {/* Main Concerns - Collapsible */}
       {analysis.mainConcerns.length > 0 && (
-        <Card className="mb-6">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <AlertTriangle className={`w-5 h-5 ${riskColors[analysis.riskLevel]}`} />
-              <CardTitle>{t.mainConcernsTitle}</CardTitle>
-            </div>
-            <CardDescription>{t.mainConcernsDesc}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-4">
-              {analysis.mainConcerns.map((concern, index) => (
-                <li key={index} className="flex flex-col gap-1 p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium text-gray-800">{concern.area}</span>
-                    <Badge className={severityColors[concern.severity]}>
-                      {concern.severity}
-                    </Badge>
+        <Collapsible defaultOpen={false} className="mb-6">
+          <Card>
+            <CollapsibleTrigger className="w-full text-left">
+              <CardHeader className="cursor-pointer hover:bg-gray-50 transition-colors pb-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className={`w-5 h-5 ${riskColors[analysis.riskLevel]}`} />
+                    <CardTitle>{t.mainConcernsTitle}</CardTitle>
+                    <Badge variant="outline" className="ml-2">{analysis.mainConcerns.length}</Badge>
                   </div>
-                  <span className="text-gray-600 text-sm">{concern.description}</span>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
+                  <ChevronDown className="w-5 h-5 text-gray-500 transition-transform duration-200" />
+                </div>
+              </CardHeader>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <CardContent className="pt-0">
+                <ul className="space-y-4">
+                  {analysis.mainConcerns.map((concern, index) => (
+                    <li key={index} className="flex flex-col gap-1 p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-gray-800">{concern.area}</span>
+                        <Badge className={severityColors[concern.severity]}>
+                          {severityLabels[concern.severity]}
+                        </Badge>
+                      </div>
+                      <span className="text-gray-600 text-sm">{concern.description}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </CollapsibleContent>
+          </Card>
+        </Collapsible>
       )}
 
       {/* Positive Aspects */}
@@ -260,7 +287,27 @@ export function ReportView({ responses, onRestart, language = 'pt' }: ReportView
               </div>
               <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
                 {analysis.psychoEducation.suggestedReading.map((reading, index) => (
-                  <li key={index}>{reading}</li>
+                  <li key={index}>
+                    {typeof reading === 'string' ? (
+                      <a 
+                        href={`https://www.google.com/search?q=${encodeURIComponent(reading)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 hover:underline"
+                      >
+                        {reading}
+                      </a>
+                    ) : (
+                      <a 
+                        href={reading.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 hover:underline"
+                      >
+                        {reading.title}
+                      </a>
+                    )}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -358,7 +405,7 @@ const translations = {
   pt: {
     analyzing: 'Analisando suas respostas...',
     processingMessage: 'Estamos processando suas informações para gerar um relatório personalizado',
-    errorTitle: 'Erro ao Analisar',
+    errorTitle: 'Ops! Algo deu errado',
     errorMessage: 'Não foi possível processar suas respostas. Por favor, tente novamente.',
     tryAgain: 'Tentar Novamente',
     reportTitle: 'Seu Relatório de Bem-Estar',
@@ -395,7 +442,7 @@ const translations = {
   en: {
     analyzing: 'Analyzing your responses...',
     processingMessage: 'We are processing your information to generate a personalized report',
-    errorTitle: 'Analysis Error',
+    errorTitle: 'Oops! Something went wrong',
     errorMessage: 'Unable to process your responses. Please try again.',
     tryAgain: 'Try Again',
     reportTitle: 'Your Well-Being Report',

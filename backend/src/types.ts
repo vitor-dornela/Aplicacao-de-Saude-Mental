@@ -30,10 +30,15 @@ export interface Recommendation {
   action: string;
 }
 
+export interface SuggestedReading {
+  title: string;
+  url?: string;
+}
+
 export interface PsychoEducation {
   title: string;
   content: string;
-  suggestedReading: string[];
+  suggestedReading: SuggestedReading[];
 }
 
 export interface CrisisResources {

@@ -11,8 +11,8 @@ interface WelcomeScreenProps {
 
 const translations = {
   pt: {
-    title: 'Bem-Estar Mental',
-    subtitle: 'Uma ferramenta de autoavaliação inteligente para ajudar você a entender melhor seu bem-estar emocional',
+    title: 'Análise de bem-estar',
+    subtitle: 'Autoavaliação com inteligência artificial para\nentender melhor sua saúde emocional',
     confidential: 'Confidencial e anônimo.',
     disclaimer: 'Suas respostas são processadas de forma segura. Este não é um diagnóstico médico.',
     selfKnowledge: 'Autoconhecimento',
@@ -29,7 +29,7 @@ const translations = {
     step3: 'Obtenha recomendações',
     step3Desc: 'baseadas em suas respostas e direcionamento para ajuda profissional',
     startButton: 'Começar Avaliação',
-    aiPowered: 'Análise impulsionada por IA',
+    aiPowered: 'Análise realizada por IA',
   },
   en: {
     title: 'Mental Well-Being',
@@ -66,7 +66,7 @@ export function WelcomeScreen({ onStart, language = 'pt' }: WelcomeScreenProps) 
         <h1 className="mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
           {t.title}
         </h1>
-        <p className="text-gray-600 max-w-2xl mx-auto">
+        <p className="text-gray-600 max-w-2xl mx-auto whitespace-pre-line">
           {t.subtitle}
         </p>
       </div>
@@ -80,9 +80,9 @@ export function WelcomeScreen({ onStart, language = 'pt' }: WelcomeScreenProps) 
 
       <div className="grid md:grid-cols-3 gap-6 mb-12">
         <Card className="border-purple-100">
-          <CardHeader>
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-2">
-              <Heart className="w-6 h-6 text-purple-600" />
+          <CardHeader className="flex flex-row items-center gap-3">
+            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+              <Heart className="w-5 h-5 text-purple-600" />
             </div>
             <CardTitle>{t.selfKnowledge}</CardTitle>
           </CardHeader>
@@ -94,9 +94,9 @@ export function WelcomeScreen({ onStart, language = 'pt' }: WelcomeScreenProps) 
         </Card>
 
         <Card className="border-blue-100">
-          <CardHeader>
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-2">
-              <Brain className="w-6 h-6 text-blue-600" />
+          <CardHeader className="flex flex-row items-center gap-3">
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <Brain className="w-5 h-5 text-blue-600" />
             </div>
             <CardTitle>{t.education}</CardTitle>
           </CardHeader>
@@ -108,9 +108,9 @@ export function WelcomeScreen({ onStart, language = 'pt' }: WelcomeScreenProps) 
         </Card>
 
         <Card className="border-pink-100">
-          <CardHeader>
-            <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mb-2">
-              <Shield className="w-6 h-6 text-pink-600" />
+          <CardHeader className="flex flex-row items-center gap-3">
+            <div className="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center">
+              <Shield className="w-5 h-5 text-pink-600" />
             </div>
             <CardTitle>{t.guidance}</CardTitle>
           </CardHeader>

@@ -120,7 +120,7 @@ const questionsPt = [
     options: [
       { value: 'normal', label: 'Normalmente, realizo tudo sem dificuldade' },
       { value: 'slight-difficulty', label: 'Pequena dificuldade, mas consigo fazer tudo' },
-      { value: 'some-difficulty', label: 'Alguma dificuldade, deixo algumas coisas para depois' },
+      { value: 'moderate-difficulty', label: 'Alguma dificuldade, deixo algumas coisas para depois' },
       { value: 'major-difficulty', label: 'Muita dificuldade, só faço o essencial' },
       { value: 'unable', label: 'Incapaz, não consigo realizar minhas tarefas básicas' },
     ],
@@ -233,7 +233,7 @@ const questionsEn = [
     options: [
       { value: 'normal', label: 'Normally, I do everything without difficulty' },
       { value: 'slight-difficulty', label: 'Slight difficulty, but I can do everything' },
-      { value: 'some-difficulty', label: 'Some difficulty, I postpone some things' },
+      { value: 'moderate-difficulty', label: 'Some difficulty, I postpone some things' },
       { value: 'major-difficulty', label: 'Major difficulty, I only do the essentials' },
       { value: 'unable', label: 'Unable, I cannot perform my basic tasks' },
     ],
