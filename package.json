@@ -1,0 +1,16 @@
+{
+  "name": "mental-health-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "dev": "cd frontend && npm run dev"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@vercel/node": "^3.0.0"
+  }
+}

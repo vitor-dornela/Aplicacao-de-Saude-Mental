@@ -1,7 +1,8 @@
 import { QuestionnaireData } from '../App';
 import { AnalysisResult, ApiResponse, Language } from '../types/api';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// In production (Vercel), API is on same domain. In dev, use localhost:3001
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:3001');
 
 export async function analyzeQuestionnaire(
   data: QuestionnaireData,

@@ -122,9 +122,9 @@ Aplicação de Saúde Mental/
 ### High Priority
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Gemini API key validation | 🔲 Pending | Verify key works |
-| Backend deployment | 🔲 Pending | Railway/Render |
-| Frontend deployment | 🔲 Pending | Vercel |
+| Gemini API key validation | ✅ Done | Verified working |
+| Backend deployment | 🔄 In Progress | Render |
+| Frontend deployment | 🔄 In Progress | Vercel |
 
 ### Medium Priority
 | Feature | Status | Notes |
