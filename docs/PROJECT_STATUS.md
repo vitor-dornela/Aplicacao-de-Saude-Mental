@@ -123,8 +123,8 @@ Aplicação de Saúde Mental/
 | Feature | Status | Notes |
 |---------|--------|-------|
 | Gemini API key validation | ✅ Done | Verified working |
-| Backend deployment | 🔄 In Progress | Render |
-| Frontend deployment | 🔄 In Progress | Vercel |
+| Backend deployment | ✅ Done | Vercel Serverless Functions |
+| Frontend deployment | ✅ Done | Vercel - [aplicacao-de-saude-mental.vercel.app](https://aplicacao-de-saude-mental.vercel.app/) |
 
 ### Medium Priority
 | Feature | Status | Notes |
@@ -188,8 +188,16 @@ npm run dev
 
 ## 📝 Next Steps
 
-1. [ ] Verify Gemini API key is working
-2. [ ] Deploy backend (Railway/Render)
-3. [ ] Deploy frontend (Vercel)
+1. [x] Verify Gemini API key is working
+2. [x] Deploy backend (Vercel Serverless)
+3. [x] Deploy frontend (Vercel)
 4. [ ] Add loading skeletons
 5. [ ] Implement offline fallback
+
+---
+
+## 🌐 Production URLs
+
+- **Live Application**: https://aplicacao-de-saude-mental.vercel.app/
+- **API Endpoint**: https://aplicacao-de-saude-mental.vercel.app/api/analyze
+- **Health Check**: https://aplicacao-de-saude-mental.vercel.app/api/health
